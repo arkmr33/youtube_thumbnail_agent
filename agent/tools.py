@@ -1,7 +1,10 @@
-from langchain_community.tools.tavily_search import TavilySearchResults
+from langchain_tavily import TavilySearch
 import os
+from dotenv import load_dotenv
 
-tavily = TavilySearchResults(
+load_dotenv()
+
+tavily = TavilySearch(
     max_results=5,
     tavily_api_key=os.getenv("TAVILY_API_KEY")
 )
