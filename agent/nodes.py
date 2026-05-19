@@ -12,6 +12,7 @@ from langchain_groq import ChatGroq
 
 from prompts import PROMPT_WRITER_SYSTEM, CRITIC_SYSTEM
 from tools import web_search
+import re
 
 
 # -------------------------
@@ -62,6 +63,16 @@ PREVIOUS CRITIQUE:
 {state.get('critique','')}
 
 Write ONE improved thumbnail prompt.
+
+IMPORTANT:
+- Maximum 700 characters
+- Keep it concise
+- No long explanations
+- no headings
+- no bullet points
+- no explanations
+- only raw prompt text
+
 """
 
     res = writer_llm.invoke(prompt)
@@ -84,6 +95,10 @@ def generator(state):
 
     invoke_url = "https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.2-klein-4b"
 
+    key = os.getenv("NVIDIA_API_KEY")
+
+    print("API KEY:", key[:4] + "..." + key[-4:] if key else "MISSING KEY")
+
     headers = {
         "Authorization": f"Bearer {os.getenv('NVIDIA_API_KEY')}",
         "Accept": "application/json",
@@ -98,15 +113,19 @@ def generator(state):
     }
 
     r = requests.post(invoke_url, headers=headers, json=payload)
+
+    # IMPORTANT: show real error message if API fails
+    if r.status_code != 200:
+        print("ERROR RESPONSE:", r.text)
     r.raise_for_status()
+
     data = r.json()
 
-    image_url = data.get("image") or data.get("output", [None])[0]
-
-    img = requests.get(image_url).content
+    img_b64 = data["artifacts"][0]["base64"]
+    img_bytes = base64.b64decode(img_b64)
 
     with open(image_path, "wb") as f:
-        f.write(img)
+        f.write(img_bytes)
 
     return {
         "image_path": str(image_path),
@@ -157,9 +176,13 @@ TOPIC: {state['topic']}
 
     raw = res.choices[0].message.content
 
-    try:
-        parsed = json.loads(raw)
-    except:
+    # 1. Extract JSON safely from messy output
+    match = re.search(r"\{.*\}", raw, re.DOTALL)
+
+    if match:
+        json_str = match.group(0)
+        parsed = json.loads(json_str)
+    else:
         parsed = {"rating": 5, "critique": "parse error"}
 
     result = CriticOutput(**parsed)
@@ -217,3 +240,18 @@ def saver(state):
     report.write_text("\n".join(text))
 
     return {}
+
+
+
+
+
+#test generator
+# if __name__ == "__main__":
+#     state = {
+#         "current_prompt": "a macro wildlife photo of a green frog in a rainforest pond, highly detailed",
+#         "iteration": 0,
+#         "output_dir": "outputs_test"
+#     }
+
+#     result = generator(state)
+#     print(result)
