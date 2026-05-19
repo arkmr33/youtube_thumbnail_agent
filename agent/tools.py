@@ -9,7 +9,9 @@ tavily = TavilySearch(
     tavily_api_key=os.getenv("TAVILY_API_KEY")
 )
 
+
 def web_search(state):
+
     topic = state["topic"]
 
     results = tavily.invoke(
@@ -18,7 +20,11 @@ def web_search(state):
 
     summaries = []
 
-    for r in results:
+   
+    items = results.get("results", [])
+
+    for r in items:
+
         title = r.get("title", "")
         content = r.get("content", "")
 
