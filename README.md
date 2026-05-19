@@ -250,7 +250,7 @@ TAVILY_API_KEY=your_key
 # ▶️ Run Project
 
 ```bash
-python main.py "topic to search"
+python agent.main.py "topic to search"
 ```
 
 ---
