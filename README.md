@@ -30,6 +30,10 @@ The system follows a Reflexion-style iterative workflow where the AI learns from
 
 # 🧠 Agent Workflow
 
+
+![Workflow](graph.png)
+
+
 The workflow is implemented using LangGraph.
 
 ```text
@@ -258,11 +262,19 @@ https://build.nvidia.com/black-forest-labs/flux_2-klein-4b?snippet_tab=Python
 # ▶️ Run Project
 
 ```bash
-python agent.main.py "topic to search" 
+python .\agent\main.py "topic to search" 
 
-eg. python agent.main.py "applications of deep learning"  
+eg. python .\agent\main.py "applications of deep learning"  
 
-or python -m main.py "Why Python is the best language" --stream # show every node update live
+or python -m .\agent\main.py "Why Python is the best language" --stream # show every node update live
+
+
+# to generate graph  run
+
+python .\agent\make_diagram.py
+
+
+
 ```
 
 ---
