@@ -244,13 +244,20 @@ GROQ_API_KEY=your_key
 NVIDIA_API_KEY=your_key
 TAVILY_API_KEY=your_key
 ```
+---
+# References
+
+https://console.groq.com/docs/models
+
+https://build.nvidia.com/black-forest-labs/flux_2-klein-4b?snippet_tab=Python
+
 
 ---
 
 # ▶️ Run Project
 
 ```bash
-python agent.main.py "topic to search"
+python agent.main.py "topic to search" eg. python agent.main.py "applications of deep learning" 
 ```
 
 ---
