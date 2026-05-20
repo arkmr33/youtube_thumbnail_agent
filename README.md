@@ -221,7 +221,7 @@ Contains:
 ## 1. Clone Repository
 
 ```bash
-git clone <your_repo_url>
+git clone https://github.com/arkmr33/youtube_thumbnail_agent
 cd project
 ```
 
