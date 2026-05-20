@@ -257,7 +257,11 @@ https://build.nvidia.com/black-forest-labs/flux_2-klein-4b?snippet_tab=Python
 # ▶️ Run Project
 
 ```bash
-python agent.main.py "topic to search" eg. python agent.main.py "applications of deep learning" 
+python agent.main.py "topic to search" 
+
+eg. python agent.main.py "applications of deep learning"  
+
+or python -m your_agentmain "Why Python is the best language" --stream # show every node update live
 ```
 
 ---
