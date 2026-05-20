@@ -1,36 +1,22 @@
-# import sys
-# from agent.graph import build_graph
-
-# def run(topic: str):
-#     app = build_graph()
-
-#     state = {
-#         "topic": topic,
-#         "search_summary": "",
-#         "current_prompt": "",
-#         "image_path": "",
-#         "rating": 0,
-#         "critique": "",
-#         "iteration": 0,
-#         "target_rating": 8,
-#         "max_iterations": 3,
-#         "history": []
-#     }
-
-#     result = app.invoke(state)
-#     print("\nFINAL OUTPUT:\n", result)
-
-
-# if __name__ == "__main__":
-#     run(topic)
-
 
 import argparse
 from graph import build_graph
+from datetime import datetime
+import re
+from pathlib import Path
+
 
 
 def run(topic: str, stream: bool = False):
     app = build_graph()
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+
+    safe_topic = re.sub(r"[^a-zA-Z0-9_-]", "_", topic)
+
+    BASE_DIR = Path(__file__).resolve().parent.parent
+
+    output_dir = BASE_DIR / "outputs" / f"{timestamp}_{safe_topic}"
+ 
 
     state = {
         "topic": topic,
@@ -42,7 +28,7 @@ def run(topic: str, stream: bool = False):
         "iteration": 0,
         "target_rating": 8,
         "max_iterations": 3,
-        "output_dir": f"test_run/{topic}/",
+        "output_dir": output_dir,
         "history": []
     }
 
