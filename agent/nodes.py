@@ -15,9 +15,7 @@ from tools import web_search
 import re
 
 
-# -------------------------
-# CLIENTS
-# -------------------------
+# define models
 
 groq_client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
@@ -28,26 +26,24 @@ writer_llm = ChatGroq(
 )
 
 
-# -------------------------
-# STRUCTURED OUTPUT
-# -------------------------
+# structured output
+
 
 class CriticOutput(BaseModel):
     rating: int = Field(..., ge=1, le=10)
     critique: str
 
 
-# -------------------------
-# NODE 1: WEB SEARCH
-# -------------------------
+
+# node 1 : WEB SEARCH
+
 
 def web_search_node(state):
     return web_search(state)
 
 
-# -------------------------
-# NODE 2: PROMPT WRITER
-# -------------------------
+
+# node 2 : PROMPT WRITER
 
 def prompt_writer(state):
 
@@ -80,9 +76,8 @@ IMPORTANT:
     return {"current_prompt": res.content}
 
 
-# -------------------------
-# NODE 3: IMAGE GENERATOR (NVIDIA FLUX)
-# -------------------------
+# node 3 : IMAGE GENERATOR (NVIDIA FLUX)
+
 
 def generator(state):
 
@@ -133,9 +128,8 @@ def generator(state):
     }
 
 
-# -------------------------
-# NODE 4: CRITIC (LLAMA 4 SCOUT)
-# -------------------------
+# node 4: CRITIC VLM(LLAMA 4 SCOUT)
+
 
 def critic(state):
 
@@ -202,9 +196,8 @@ TOPIC: {state['topic']}
     }
 
 
-# -------------------------
-# CONDITION
-# -------------------------
+# condition to determine if we should continue iterating or move to saver node
+
 
 def should_continue(state):
 
@@ -214,9 +207,8 @@ def should_continue(state):
     return "prompt_writer"
 
 
-# -------------------------
-# NODE 5: SAVER
-# -------------------------
+# node 5 : SAVER
+
 
 def saver(state):
 
