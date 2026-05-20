@@ -227,7 +227,7 @@ Contains:
 ```bash
 git clone https://github.com/arkmr33/youtube_thumbnail_agent
 
-cd project
+cd youtube_thumbnail_agent
 ```
 
 ---
