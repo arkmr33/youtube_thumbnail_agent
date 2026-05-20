@@ -261,7 +261,7 @@ python agent.main.py "topic to search"
 
 eg. python agent.main.py "applications of deep learning"  
 
-or python -m your_agentmain "Why Python is the best language" --stream # show every node update live
+or python -m main.py "Why Python is the best language" --stream # show every node update live
 ```
 
 ---
