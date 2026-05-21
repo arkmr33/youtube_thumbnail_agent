@@ -257,6 +257,37 @@ https://console.groq.com/docs/models
 https://build.nvidia.com/black-forest-labs/flux_2-klein-4b?snippet_tab=Python
 
 
+# reference code for image generation
+
+
+```bash
+
+import requests
+
+invoke_url = "https://ai.api.nvidia.com/v1/genai/black-forest-labs/flux.2-klein-4b"
+
+headers = {
+    "Authorization": "Bearer $NVIDIA_API_KEY",
+    "Accept": "application/json",
+}
+
+payload = {
+    "prompt": "a macro wildlife photo of a green frog in a rainforest pond, highly detailed, eye-level shot",
+    "width": 1024,
+    "height": 1024,
+    "seed": 0,
+    "steps": 4
+}
+
+response = requests.post(invoke_url, headers=headers, json=payload)
+
+response.raise_for_status()
+response_body = response.json()
+print(response_body)
+
+
+```
+
 ---
 
 # ▶️ Run Project
